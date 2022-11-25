@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+    <h1 class="text-center"  style="background-color: blue;">California cake Cafe</h1>
+    <!-- Table Data -->
+    <div class="container">
+        <hr>
+        <input type="text" id="myInput" onkeyup='tableSearch()' placeholder="serach-Name">
+
+        <table class="table" id="myTable" data-filter-control="true" data-show-search-clear-button="true">
+        <thead>
+            <tr>
+                <th>Sl.NO</th>
+
+                <th>Address</th>
+                <th>Postal</th>
+                <th>Lat</th>
+                <th>Long</th>
+
+            </tr>
+        </thead>
+        <tbody  id="table-data"> </tbody>
+        
+        </table>
+    </div>
+
+    <script type="application/javascript">
+
+
+fetch("https://raw.githubusercontent.com/debojyoti/places-fake-rest-api/master/places.json").then(
+  res => {
+    res.json().then(
+      data => {
+        console.log(data.places);
+        if (data.places.length > 0) {
+
+          var temp = "";
+          data.places.forEach((itemData,id) => {
+            temp += "<tr>";
+            temp += "<td>" + id + "</td>"
+        //    temp += "<td>" +       + "</td>"
+            temp += "<td>" + itemData.street_no+ " " +itemData.locality + "</td>"
+            temp += "<td>" + itemData.postal_code+ "</td>"
+            temp += "<td>" + itemData.lat+ "</td>"
+            temp += "<td>" + itemData.long+ "</td>"
+
+            "</tr>";
+          });
+          document.getElementById('table-data').innerHTML = temp;
+        }
+      }
+    )
+  }
+)
+
+
+
+
+
+        function tableSearch() {
+            let input, filter, table, tr, td,i, txtValue;
+
+            //Intialising Variables
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table-data");
+            tr = table.getElementsByTagName("tr");
+
+            for (let i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+
+        }
+    </script>
+</body>
+
+<footer></footer>
+
+</html>
